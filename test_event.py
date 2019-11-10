@@ -1,9 +1,13 @@
 import pytest
 
+from unittest.mock import Mock
+
 from events.model import Event, EventStatus, DEAFULT_ORGANIZER
 from events.errors import InvalidOrganizerError, InvalidTranstionStatus
+from events.dao import DB
 
 from datetime import datetime
+from events.controller import EventController
 
 @pytest.fixture(scope="function")
 def event():
@@ -133,3 +137,54 @@ def test_change_from_status1_to_status2_unsuccess(from_status,to_status,expected
 
 def test_is_possible_day():
     assert Event.is_possible_day(0) == False
+
+
+# DB Layer
+
+"""
+def test_insert_event_on_db_connection_real(event):
+    db = DB()
+    db.insert("events", event)
+    assert len(db.get_table("events")) == 1
+"""
+
+def test_insert_event_on_mock_db(event):
+    db = Mock()
+    db.insert.side_effect = ConnectionError
+
+    with pytest.raises(ConnectionError):
+        db.insert(event)
+
+# Controller Layer
+
+def test_insert_event_on_real_db(event):
+    event_controller = EventController()
+    result = event_controller.create(event)
+    assert result is True
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
