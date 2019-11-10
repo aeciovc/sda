@@ -185,7 +185,13 @@ class TestCreateEventController:
         event_controller = EventController()
 
         result = event_controller.create(event)
-        assert result is False
+        assert result is (False, ConnectionError)
+
+    def test_create_event_with_image_upload_service_error(self, event):
+        event_controller = EventController()
+
+        result = event_controller.create(event)
+        assert result is (False, ConnectionRefusedError)
 
 
 
