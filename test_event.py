@@ -183,15 +183,26 @@ class TestCreateEventController:
     # fails
     def test_create_event_with_db_connection_error(self, event):
         event_controller = EventController()
+        event_controller.db = Mock()
+        event_controller.db.insert.side_effect = Exception
+        
+        event_controller.upload_service = Mock()
 
-        result = event_controller.create(event)
-        assert result is (False, ConnectionError)
+        result, excp = event_controller.create(event)
+        assert result == False
+        assert excp == ConnectionError
 
-    def test_create_event_with_image_upload_service_error(self, event):
+
+    def test_create_event_with_upload_service_error(self, event):
         event_controller = EventController()
 
+        event_controller.db = Mock()
+
+        event_controller.upload_service = Mock()
+        event_controller.upload_service.upload_from_url.side_effect = Exception
+
         result = event_controller.create(event)
-        assert result is (False, ConnectionRefusedError)
+        assert result == (False, ConnectionRefusedError)
 
 
 

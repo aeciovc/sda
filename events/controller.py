@@ -12,8 +12,14 @@ class EventController:
         if event is None:
             return False
 
-        self.db.insert("events", event)
-
-        self.upload_service.upload_from_url(event.picture)
+        try:
+            self.db.insert("events", event)
+        except:
+            return (False, ConnectionError)
+        
+        try:
+            self.upload_service.upload_from_url(event.picture)
+        except(Exception):
+            return (False, ConnectionRefusedError)
 
         return True
