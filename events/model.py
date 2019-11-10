@@ -22,6 +22,7 @@ class Event:
         self.date = self._get_valid_date(kwargs['date'])
         self.organizer = self._get_valid_organizer(kwargs.get('organizer', DEAFULT_ORGANIZER))
         self.status = kwargs.get('status', EventStatus.DRAFT)
+        self.picture = kwargs.get('picture', 'https://www.traveller.ee/blog/wp-content/uploads/2013/10/12344348133_95f14f8a31_k-680x450.jpg')
 
     @classmethod
     def is_possible_day(cls, day):

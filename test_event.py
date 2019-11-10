@@ -147,41 +147,45 @@ def test_insert_event_on_db_connection_real(event):
     db.insert("events", event)
     assert len(db.get_table("events")) == 1
 """
-
+"""
 def test_insert_event_on_mock_db(event):
     db = Mock()
     db.insert.side_effect = ConnectionError
 
     with pytest.raises(ConnectionError):
         db.insert(event)
+"""
 
 # Controller Layer
+class TestCreateEventController:
 
-def test_insert_event_on_real_db(event):
-    event_controller = EventController()
-    result = event_controller.create(event)
-    assert result is True
+    # success
+    def test_create_event(self, event):
+        event_controller = EventController()
+        
+        # Mocking db inside EventController
+        event_controller.db = Mock()
+        event_controller.upload_service = Mock()
+        
+        result = event_controller.create(event)
+        assert result is True
 
+    def test_create_event_with_none(self):
+        event_controller = EventController()
+        
+        # Mocking db inside EventController
+        event_controller.db = Mock()
+        event_controller.upload_service = Mock()
+        
+        result = event_controller.create(None)
+        assert result is False
 
+    # fails
+    def test_create_event_with_db_connection_error(self, event):
+        event_controller = EventController()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        result = event_controller.create(event)
+        assert result is False
 
 
 
