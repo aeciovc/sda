@@ -30,7 +30,11 @@ class EventController:
 
     def _translate_from_dict(self, data):
 
-        if data['day'] == "Saturday":
-            data['date'] = 5
+        if data is None or not isinstance(data, dict):
+            return data
+        
+        if 'day' in data:
+            if data['day'] == "Saturday":
+                data['date'] = 5
 
         return Event(**data)

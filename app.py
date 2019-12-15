@@ -17,8 +17,7 @@ def event_create():
     }
 
     event_controller = EventController()
+    
     result = event_controller.create(event)
-
-    print("Result> ", result)
 
     return {}, 201

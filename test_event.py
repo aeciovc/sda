@@ -188,7 +188,7 @@ class TestCreateEventController:
         
         event_controller.upload_service = Mock()
 
-        result, excp = event_controller.create(event)
+        result, excp = event_controller.create(event.__dict__)
         assert result == False
         assert excp == ConnectionError
 
@@ -201,7 +201,7 @@ class TestCreateEventController:
         event_controller.upload_service = Mock()
         event_controller.upload_service.upload_from_url.side_effect = Exception
 
-        result = event_controller.create(event)
+        result = event_controller.create(event.__dict__)
         assert result == (False, ConnectionRefusedError)
 
 
